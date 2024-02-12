@@ -13,7 +13,7 @@ class _MezmurDetailState extends State<MezmurDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: const Color.fromRGBO(244, 237, 213, 100),
+      backgroundColor:  const Color.fromRGBO(244, 237, 213, 8),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(225, 159, 105, 0.694),
         leading: IconButton(

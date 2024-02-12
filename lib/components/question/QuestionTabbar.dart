@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:niu/components/home/Body.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:niu/components/common/Post.dart';
+import 'package:niu/screens/QuestionAnswerPage.dart';
 
-import '../common/Post.dart';
 
 class QuestionTabbar extends StatelessWidget {
-  const QuestionTabbar({super.key});
+  QuestionTabbar({Key? key}) : super(key: key);
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController questionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,92 +22,108 @@ class QuestionTabbar extends StatelessWidget {
               labelColor: Colors.black,
               padding: EdgeInsets.only(bottom: 10),
               tabs: [
-                Tab(icon: Icon(Icons.question_mark), text: '27 ጥያቄዎች'),
-                Tab(icon: Icon(Icons.add), text: 'ጥያቄ ይጨምሩ'),
+                Tab(icon: Icon(Icons.question_mark), text: '27 ጥያቄዎች 27 question '),
+                Tab(icon: Icon(Icons.add), text: 'ጥያቄ ይጨምሩ insert your question'),
               ],
             ),
             Expanded(
               child: TabBarView(
                 children: [
-                  Expanded(
-                    child: SizedBox(
-                      // height: 500,
-                      width: double.infinity,
-                      child: ListView(
-                        scrollDirection: Axis.vertical,
-                        children: const [
-                          Post(
-                              heading: "የማርያም ዝክር",
-                              detail:
-                                  "መጋቢት 2 ከምሽቱ 11 ሰዓት ላይ የ ማርያም ዝክር ስልሚኖር ሁላችሁም እንድትገኙ።\nየቻላችሁትን 5 10 ይዛችሁ ኑ..."),
-                          Post(
-                              heading: "የማርያም ዝክር",
-                              detail:
-                                  "መጋቢት 2 ከምሽቱ 11 ሰዓት ላይ የ ማርያም ዝክር ስልሚኖር ሁላችሁም እንድትገኙ።\nየቻላችሁትን 5 10 ይዛችሁ ኑ..."),
-                          Post(
-                              heading: "የማርያም ዝክር",
-                              detail:
-                                  "መጋቢት 2 ከምሽቱ 11 ሰዓት ላይ የ ማርያም ዝክር ስልሚኖር ሁላችሁም እንድትገኙ።\nየቻላችሁትን 5 10 ይዛችሁ ኑ..."),
-                          Post(
-                              heading: "የማርያም ዝክር",
-                              detail:
-                                  "መጋቢት 2 ከምሽቱ 11 ሰዓት ላይ የ ማርያም ዝክር ስልሚኖር ሁላችሁም እንድትገኙ።\nየቻላችሁትን 5 10 ይዛችሁ ኑ..."),
-                          Post(
-                              heading: "የማርያም ዝክር",
-                              detail:
-                                  "መጋቢት 2 ከምሽቱ 11 ሰዓት ላይ የ ማርያም ዝክር ስልሚኖር ሁላችሁም እንድትገኙ።\nየቻላችሁትን 5 10 ይዛችሁ ኑ..."),
-                          Post(
-                              heading: "የማርያም ዝክር",
-                              detail:
-                                  "መጋቢት 2 ከምሽቱ 11 ሰዓት ላይ የ ማርያም ዝክር ስልሚኖር ሁላችሁም እንድትገኙ።\nየቻላችሁትን 5 10 ይዛችሁ ኑ..."),
-                          Post(
-                              heading: "የማርያም ዝክር",
-                              detail:
-                                  "መጋቢት 2 ከምሽቱ 11 ሰዓት ላይ የ ማርያም ዝክር ስልሚኖር ሁላችሁም እንድትገኙ።\nየቻላችሁትን 5 10 ይዛችሁ ኑ..."),
-                          Post(
-                              heading: "የማርያም ዝክር",
-                              detail:
-                                  "መጋቢት 2 ከምሽቱ 11 ሰዓት ላይ የ ማርያም ዝክር ስልሚኖር ሁላችሁም እንድትገኙ።\nየቻላችሁትን 5 10 ይዛችሁ ኑ..."),
-                        ],
-                      ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: StreamBuilder(
+                      stream: FirebaseFirestore.instance.collection('questions').snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return CircularProgressIndicator(
+                            strokeWidth: 2.0,
+                            valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(242, 208, 94, 47)),
+                          );
+                        }
+
+                        return ListView(
+                          scrollDirection: Axis.vertical,
+                          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => QuestionAnswerPage(
+                                      questionId: document.id, // Pass the questionId instead of question
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Post(
+                                heading: document['name'],
+                                detail: document['question'],
+                                writer: 'Unknown',
+                              ),
+                            );
+                          }).toList(),
+                        );
+                      },
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 10),
-                      child: ListView(
-                        children: [
-                          TextField(
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor:
-                                  const Color.fromRGBO(244, 237, 213, 100),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              hintText: 'ጥያቄዎትን እዚህ ጋ ይጻፉ...',
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    child: ListView(
+                      children: [
+                        TextField(
+                          controller: questionController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor:
+                            const Color.fromRGBO(244, 237, 213, 100),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
                             ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            hintText: 'ጥያቄዎትን እዚህ ጋ ይጻፉ...',
                           ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          ElevatedButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.send),
-                                Text("ጥያቄውን ላክ")
-                              ],
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        TextField(
+                          controller: nameController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor:
+                            const Color.fromRGBO(244, 237, 213, 100),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
                             ),
-                            onPressed: () {},
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            hintText: 'ክርስትና ስሞን ያስገቡ...',
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(width: 12,),
+                        ElevatedButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.send),
+                              Text("ጥያቄውን ላክ ")
+                            ],
+                          ),
+                          onPressed: () {
+                            sendDataToFirebase();
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -113,5 +133,26 @@ class QuestionTabbar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> sendDataToFirebase() async {
+    try {
+      String name = nameController.text;
+      String question = questionController.text;
+
+      if (name.isNotEmpty && question.isNotEmpty) {
+        await FirebaseFirestore.instance.collection('questions').add({
+          'name': name,
+          'question': question,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+        nameController.clear();
+        questionController.clear();
+      } else {
+        print("Name and question cannot be empty.");
+      }
+    } catch (e) {
+      print("Error sending data to firebase: $e");
+    }
   }
 }

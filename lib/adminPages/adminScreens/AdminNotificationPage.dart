@@ -1,9 +1,8 @@
 import "package:flutter/material.dart";
-import '../components/common/Post.dart';
-import '../components/notification/NotificationPost.dart';
+import '../adminComponents/notification/NotificationPost.dart';
 
-class NotificationPage extends StatelessWidget {
-  const NotificationPage({super.key});
+class AdminNotificationPage extends StatelessWidget {
+  const AdminNotificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +11,9 @@ class NotificationPage extends StatelessWidget {
         scrollDirection: Axis.vertical,
         controller: controller,
         children: const [
+          NotificationPost(),
+          NotificationPost(),
+          NotificationPost(),
           NotificationPost(),
         ]);
   }

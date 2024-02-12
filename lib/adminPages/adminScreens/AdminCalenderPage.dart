@@ -1,9 +1,11 @@
 import "package:flutter/material.dart";
 import 'package:table_calendar/table_calendar.dart';
-import '../components/common/Post.dart';
 
-class CalenderPage extends StatelessWidget {
-  const CalenderPage({super.key});
+import '../adminComponents/common/Post.dart';
+
+
+class AdminCalenderPage extends StatelessWidget {
+  const AdminCalenderPage({super.key});
 
   @override
   Widget build(BuildContext context) {

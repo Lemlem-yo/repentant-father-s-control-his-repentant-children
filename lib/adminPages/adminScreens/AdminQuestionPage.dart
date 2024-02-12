@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import '../components/home/HomeHeading.dart';
-import '../components/home/Body.dart';
-import '../components/home/HomeSubHeading.dart';
-import '../components/question/QuestionHeading.dart';
-import '../components/question/QuestionTabbar.dart';
+import '../adminComponents/question/QuestionHeading.dart';
+import '../adminComponents/question/QuestionTabbar.dart';
 
-class QuestionPage extends StatelessWidget {
-  const QuestionPage({super.key});
+class AdminQuestionPage extends StatelessWidget {
+  const AdminQuestionPage({super.key});
 
   @override
   Widget build(BuildContext context) {

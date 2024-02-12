@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
-import '../components/common/TopBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SibketDetail extends StatefulWidget {
-  const SibketDetail({super.key});
+  const SibketDetail({
+    Key? key,
+    required this.title,
+    required this.message,
+    required this.writer,
+  }) : super(key: key);
+
+  final String title;
+  final String message;
+  final String writer;
 
   @override
   State<SibketDetail> createState() => _SibketDetailState();
@@ -17,15 +23,15 @@ class _SibketDetailState extends State<SibketDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: const Color.fromRGBO(244, 237, 213, 100),
+      backgroundColor: const Color.fromRGBO(244, 237, 213, 8),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(225, 159, 105, 0.694),
         leading: IconButton(
           icon: const Icon(FontAwesomeIcons.arrowLeft),
           onPressed: Navigator.of(context).pop,
         ),
-        title: const Text(
-          "ወደ እግዚአብሔር ቤት እንሂድ ባሉኝ ጊዜ ደስ አለኝ",
+        title: Text(
+          widget.title,
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         ),
       ),
@@ -41,20 +47,20 @@ class _SibketDetailState extends State<SibketDetail> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Text(
-                        "ዲን. ሔኖክ ኃይሌ",
+                        '', // You can display additional info here if needed
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        "2ኛ ሳሙኤል 3 ፡ 4",
+                        '', // You can display additional info here if needed
                         style: TextStyle(
                             fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
-                  const Text(
-                    "በዓመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚቀር መቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከ\n\nመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ  መቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚ መቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች \n\nይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚመቱ ውስጥ ያሉት ቀናት/ከመስከረም 1 እስከ ጳጉሜን 5/ ብቻ ሳይሆኑ እሁዶቹም /ሳምንታቱም/ የተለያዩ ነገሮች ይታሰቡባቸዋል፡፡ በዓመቱ ውስጥ ባሉት እሁዶች /ሳምንታት/ በእያንዳንዳቸው የሚ...",
-                  )
+                  Text(
+                    widget.message,
+                  ),
                 ],
               ),
             )

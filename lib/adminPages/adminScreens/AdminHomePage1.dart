@@ -1,12 +1,12 @@
-import 'package:flutter/material.dart';
-import '../components/home/HomeHeading.dart';
-import '../components/home/Body.dart';
-import '../components/home/HomeSubHeading.dart';
-import '../components/question/QuestionHeading.dart';
-import '../components/question/QuestionTabbar.dart';
 
-class QuestionPage extends StatelessWidget {
-  const QuestionPage({super.key});
+import 'package:flutter/material.dart';
+import 'package:niu/adminPages/adminComponents/home/HomeHeading.dart';
+import 'package:niu/adminPages/adminComponents/home/HomeSubHeading.dart';
+
+
+
+class AdminHomePage1 extends StatelessWidget {
+  const AdminHomePage1({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class QuestionPage extends StatelessWidget {
           height: 30,
           width: double.infinity,
         ),
-        const QuestionHeading(),
+        const HomeHeading(),
         Expanded(
           child: Container(
             width: double.infinity,
@@ -27,8 +27,8 @@ class QuestionPage extends StatelessWidget {
                 color: Color.fromRGBO(217, 217, 217, 80)),
             margin: const EdgeInsets.only(top: 20),
             child: Column(
-              children:  [
-                QuestionTabbar(),
+              children: const [
+                HomeSubHeading(),
               ],
             ),
           ),

@@ -12,8 +12,10 @@ class NotificationPost extends StatelessWidget {
           "የንስሐ አባቶችና ልጆች የጽዋ ቀን",
           style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
         ),
-        Container(
-          child:  Image(image: AssetImage("assets/images/nitsiha1.jpg")),
+        Expanded(
+          child: Container(
+            child:  Image(image: AssetImage("assets/images/nitsiha1.jpg")),
+          ),
         ),
         const Text(
           "#ቦታ ፥ አቡነ ገብረ መንፈስ ቅዱስ ቤ/ክ ከትልቁ አዳራሽ \n #ሰዓት፥  እሑድ ምሽት 12:00-1:30 ትገኙልን_ዘንድ_ጥሪያችን_እነሆ_ይድረሳችሁ\n !!ጌታ: እግዚአብሔር : ክርስቲያኖችን :ኃጢአት :ስለሠሩ : አይኮንናቸውም፡፡\n ጌታ: የሚፈርድባቸው :ንስሐ : ስለማይገቡ : ነው፡",

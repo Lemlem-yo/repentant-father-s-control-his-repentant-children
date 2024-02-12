@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:niu/adminPages/adminComponents/common/SibketCard.dart';
+import 'package:niu/adminPages/adminScreens/AnswerDetail.dart';
 import 'package:niu/components/common/BealatDetailCard.dart';
-import 'package:niu/components/common/SibketCard.dart';
+
 import 'package:niu/components/home/Body.dart';
 
 import '../common/MezmurCard.dart';
@@ -14,7 +16,7 @@ class HomeSubHeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: DefaultTabController(
-        length: 3,
+        length: 4,
         child: Column(
           children: <Widget>[
             const TabBar(
@@ -25,6 +27,7 @@ class HomeSubHeading extends StatelessWidget {
                 Tab(icon: Icon(Icons.music_note), text: 'ስብከት'),
                 Tab(icon: Icon(Icons.movie), text: 'መዝሙር'),
                 Tab(icon: Icon(Icons.book), text: 'በዓላት'),
+                Tab(icon: Icon(Icons.book), text: 'ጥያቄዎች'),
               ],
             ),
             Expanded(
@@ -35,10 +38,11 @@ class HomeSubHeading extends StatelessWidget {
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return CircularProgressIndicator(
-                          strokeWidth: 2.0,  // Adjust the strokeWidth to control the size
+                          strokeWidth: 1.0,  // Adjust the strokeWidth to control the size
                           valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(242, 208, 94, 47)),
                         ); // Loading indicator
                       }
+
 
                       var messages = snapshot.data?.docs;
 
@@ -87,6 +91,59 @@ class HomeSubHeading extends StatelessWidget {
                       ],
                     ),
                   ),
+                  StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: FirebaseFirestore.instance.collection('questions').snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(
+                          strokeWidth: 1.0,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(242, 208, 94, 47)),
+                        );
+                      }
+
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      var questions = snapshot.data?.docs;
+
+                      return Container(
+                        width: double.infinity,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: questions?.length ?? 0,
+                          itemBuilder: (context, index) {
+                            var question = questions?[index].data() as Map<String, dynamic>;
+                            var title = question['name'] as String? ?? '';
+                            var answer = question['question'] as String? ?? '';
+                            var questionId = questions?[index].id;
+
+                            return GestureDetector(
+                              onTap: () {
+                                if (questionId != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => AnswerDetail(questionId: questionId),
+                                    ),
+                                  );
+                                } else {
+                                  print("Error: Unable to retrieve question ID");
+                                }
+                              },
+                              child: Post(
+                                heading: title,
+                                detail: answer,
+                                writer: "", // You may want to add a writer field in your Firestore documents
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+
+
                 ],
               ),
             ),
@@ -96,8 +153,6 @@ class HomeSubHeading extends StatelessWidget {
     );
   }
 }
-//
 Stream<QuerySnapshot> getSibketMessages() {
   return FirebaseFirestore.instance.collection('sbketMessage').snapshots();
 }
-
